@@ -20,7 +20,10 @@ export default function Home() {
 
   // Agent State
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
+  // Flash State
   const [flashActive, setFlashActive] = useState(false);
+  const [flashPosition, setFlashPosition] = useState<{ x: number, y: number } | null>(null);
+
   const selectedAgentRef = useRef<Agent | null>(null);
   const hasFireballRef = useRef(false);
 
@@ -111,6 +114,18 @@ export default function Home() {
         // Open Palm (w/ Fireball) -> Flash
         if (detected === 'Open_Palm' && hasFireballRef.current) {
           hasFireballRef.current = false;
+
+          // Calculate centroid for flash origin
+          const thumb = landmarks[4];
+          const index = landmarks[8];
+          const middle = landmarks[12];
+          // Use video/canvas dimensions if available, otherwise normalize
+          // Coordinates are 0-1, so we'll multiply by 100% in CSS or pixel values later
+          // Let's store normalized 0-1 for state simplicity
+          const cx = (thumb.x + index.x + middle.x) / 3;
+          const cy = (thumb.y + index.y + middle.y) / 3;
+
+          setFlashPosition({ x: cx, y: cy });
           setFlashActive(true);
           setTimeout(() => setFlashActive(false), 2000); // 2s flash fade
         }
@@ -181,15 +196,52 @@ export default function Home() {
 
   useGestureHandler(currentGesture, handlers);
 
+  // Repo path handling for assets
+  const isProd = process.env.NODE_ENV === 'production';
+  const flashImg = isProd
+    ? '/valorant-hand-gesture/assets/phoenix flash.jpeg'
+    : '/assets/phoenix flash.jpeg';
+
   return (
     <main className="relative w-full h-screen bg-neutral-950 overflow-hidden flex items-center justify-center">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-neutral-900 to-purple-900/20"></div>
 
       {/* FLASH EFFECT OVERLAY */}
       <div
-        className={`absolute inset-0 pointer-events-none z-[100] transition-opacity ease-out ${flashActive ? 'opacity-100 duration-0' : 'opacity-0 duration-[2000ms]'}`}
-        style={{ backgroundColor: '#efd7b3ff' }} // Phoenix Orange
-      />
+        className={`absolute inset-0 pointer-events-none z-[100] overflow-hidden ${flashActive ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        style={{
+          transition: flashActive ? 'none' : 'opacity 2000ms ease-out'
+        }}
+      >
+        {/* Background Layer to ensure screen is covered if image doesn't match aspect ratio perfectly */}
+        <div className="absolute inset-0 bg-orange-100/50 mix-blend-overlay"></div>
+
+        {/* Positioned Flash Image */}
+        {flashPosition && (
+          <div
+            className="absolute w-[200vmax] h-[200vmax]"
+            style={{
+              left: `${flashPosition.x * 100}%`,
+              top: `${flashPosition.y * 100}%`,
+              transform: 'translate(-50%, -50%)',
+              background: `radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,150,0,0) 70%), url('${flashImg}')`,
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+            }}
+          >
+            {/* Optional: Actual IMG tag if we want more control, but background is easier for "covering" */}
+            <img
+              src={flashImg}
+              className="w-full h-full object-cover opacity-90 mix-blend-screen"
+              alt=""
+              style={{
+                maskImage: 'radial-gradient(circle, black 30%, transparent 80%)'
+              }}
+            />
+          </div>
+        )}
+      </div>
 
       <div className="relative aspect-video w-full max-w-6xl max-h-[80vh] rounded-3xl overflow-hidden shadow-2xl border border-white/5 bg-black">
         {permission !== 'granted' && (
