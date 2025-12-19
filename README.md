@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Valorant Hand Gesture
 
-## Getting Started
+A high-performance hand gesture recognition web application featuring **Valorant Agent Skills**.  
+Built with **Next.js**, **TypeScript**, and **MediaPipe**.
 
-First, run the development server:
+## 🎮 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+*   **Real-time Hand Tracking**: Uses Google's MediaPipe for robust landmark detection.
+*   **Dual Tracking Modes**:
+    *   **Geometric**: Fast, custom algorithms for efficiency.
+    *   **Google AI**: High-accuracy machine learning gesture classifier.
+*   **Agent Skills System**:
+    *   **Phoenix**:
+        *   🔥 **Fireball**: Snap your fingers (Thumb + Middle) to spawn a fireball that tracks your hand.
+        *   ✨ **Flash**: Open your palm while holding a fireball to trigger a realistic, blinding flash effect.
+*   **Optimized Performance**: Custom rendering loop running outside React state for 60fps+ smoothness.
+*   **Debug Mode**: Visualize hand skeleton and geometric distances in real-time.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 How to Run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/tmih06/valorant-hand-gesture.git
+    cd valorant-hand-gesture
+    ```
 
-## Learn More
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+3.  **Start the Server**:
+    ```bash
+    npm run dev
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4.  **Open in Browser**:
+    Navigate to `http://localhost:3000`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Tech Stack
 
-## Deploy on Vercel
+*   **Framework**: Next.js 14+ (App Router)
+*   **Language**: TypeScript
+*   **Vision AI**: MediaPipe Tasks Vision (WASM)
+*   **Styling**: Tailwind CSS
+*   **Deployment**: GitHub Pages (Static Export)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📦 Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project automates deployment to **GitHub Pages** using GitHub Actions.
+Any push to the `main` branch triggers the workflow defined in `.github/workflows/deploy.yml`.
+
+---
+*Created by [tmih06](https://github.com/tmih06)*
