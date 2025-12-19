@@ -37,6 +37,7 @@ export default function Home() {
 
   const framesRef = useRef(0);
   const lastGestureRef = useRef<GestureType>('None');
+  const lastAccuracyUpdateRef = useRef(0);
 
   // FPS Counter Interval
   useEffect(() => {
@@ -143,8 +144,13 @@ export default function Home() {
         }
       }
 
-      const score = results.handedness?.[0]?.[0]?.score || 0;
-      setAccuracy(score);
+      // Throttle accuracy updates to avoid React render spam (every 200ms)
+      const now = Date.now();
+      if (now - lastAccuracyUpdateRef.current > 200) {
+        const score = results.handedness?.[0]?.[0]?.score || 0;
+        setAccuracy(score);
+        lastAccuracyUpdateRef.current = now;
+      }
 
       if (detected !== lastGestureRef.current) {
         lastGestureRef.current = detected;

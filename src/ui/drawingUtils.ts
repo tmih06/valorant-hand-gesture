@@ -78,19 +78,18 @@ export const drawEffects = (ctx: CanvasRenderingContext2D, landmarks: Normalized
         ctx.save();
         ctx.translate(cx, cy);
 
-        // --- Bloom Effect ---
-        // 1. Outer Glow (Large, soft orange)
+        // --- Bloom Effect (Optimized) ---
+        // 1. Outer Glow (Standard Alpha Blend)
         const outerGlow = ctx.createRadialGradient(0, 0, size * 0.2, 0, 0, size * 0.8);
-        outerGlow.addColorStop(0, 'rgba(255, 100, 0, 0.6)');
+        outerGlow.addColorStop(0, 'rgba(255, 100, 0, 0.4)');
         outerGlow.addColorStop(1, 'rgba(255, 50, 0, 0)');
 
-        ctx.globalCompositeOperation = 'screen'; // Use screen blend mode for glowing effect
         ctx.fillStyle = outerGlow;
         ctx.beginPath();
         ctx.arc(0, 0, size * 0.8, 0, 2 * Math.PI);
         ctx.fill();
 
-        // 2. High Intensity Core (Small, bright yellow/white)
+        // 2. High Intensity Core
         const coreGlow = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 0.3);
         coreGlow.addColorStop(0, 'rgba(255, 255, 200, 0.9)');
         coreGlow.addColorStop(0.5, 'rgba(255, 150, 0, 0.5)');
@@ -100,9 +99,6 @@ export const drawEffects = (ctx: CanvasRenderingContext2D, landmarks: Normalized
         ctx.beginPath();
         ctx.arc(0, 0, size * 0.3, 0, 2 * Math.PI);
         ctx.fill();
-
-        // Reset Composite Operation for Image
-        ctx.globalCompositeOperation = 'source-over';
 
         // Draw Image
         if (fireballImg && fireballImg.complete && fireballImg.naturalWidth !== 0) {
