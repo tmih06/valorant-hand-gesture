@@ -125,7 +125,7 @@ export default function Home() {
           const cx = (thumb.x + index.x + middle.x) / 3;
           const cy = (thumb.y + index.y + middle.y) / 3;
 
-          setFlashPosition({ x: cx, y: cy });
+          setFlashPosition({ x: 1 - cx, y: cy });
           setFlashActive(true);
           setTimeout(() => setFlashActive(false), 2000); // 2s flash fade
         }
