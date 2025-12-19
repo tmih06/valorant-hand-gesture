@@ -2,8 +2,8 @@ import { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 // Load Fireball Asset Lazily
 let fireballImg: HTMLImageElement | null = null;
-// Use local path (relative to current path for robustness on sub-paths)
-const FIREBALL_IMG_URL = 'assets/phoenix fireball.png';
+const isProd = process.env.NODE_ENV === 'production';
+const FIREBALL_IMG_URL = isProd ? '/valorant-hand-gesture/assets/phoenix fireball.png' : '/assets/phoenix fireball.png';
 
 export const drawHand = (ctx: CanvasRenderingContext2D, landmarks: NormalizedLandmark[], width: number, height: number, debugInfo?: string[]) => {
     // Draw connections
