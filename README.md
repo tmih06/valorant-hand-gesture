@@ -53,4 +53,4 @@ This project automates deployment to **GitHub Pages** using GitHub Actions.
 Any push to the `main` branch triggers the workflow defined in `.github/workflows/deploy.yml`.
 
 ---
-*Created by [tmih06](https://github.com/tmih06)*
+*this project is vibe coded 99% with Antigravity, feels free to use it lol*
